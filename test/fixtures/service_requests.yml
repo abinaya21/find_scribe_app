@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  city: MyString
+  user_id: MyString
+  date: 2016-04-05
+  start_time: 2016-04-05 17:41:11
+  to_time: 2016-04-05 17:41:11
+  user_id: 1
+  language: MyString
+
+two:
+  city: MyString
+  user_id: MyString
+  date: 2016-04-05
+  start_time: 2016-04-05 17:41:11
+  to_time: 2016-04-05 17:41:11
+  user_id: 1
+  language: MyString
