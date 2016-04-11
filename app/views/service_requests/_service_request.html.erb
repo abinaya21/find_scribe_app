@@ -1,0 +1,19 @@
+<tr>
+	<td><%= service_request.city %></td>
+  	<td><%= service_request.date %></td>
+  	<td><%= service_request.start_time %></td>
+  	<td><%= service_request.end_time %></td>
+  	<td><%= service_request.language %></td>
+  	<% if current_user.is_volunteer %>
+  		<td><%= link_to "View", edit_service_request_path(service_request) %></td>
+      <% if service_request.responded_by(current_user.volunteer) %>
+        <td><%= button_to "Mark as unavailable", drop_response_path(service_request_id: service_request), 
+            method: :delete, data: { confirm: "Are you sure you want to delete your response?" } %></td>
+      <% else %>
+        <td><%= button_to "Mark as available", build_service_response_path(service_request_id: service_request) %></td>
+      <% end %>
+  	<% else %>
+  		<td><%= link_to "Edit", edit_service_request_path(service_request) %></td>
+      <td><%= link_to "View Responses", service_responses_path(service_request_id: service_request) %></td>
+  	<% end %>
+</tr>

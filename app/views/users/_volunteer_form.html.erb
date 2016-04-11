@@ -1,0 +1,18 @@
+<%= label_tag :available_on_mon, "Monday" %>
+<%= check_box :volunteer, :available_on_mon %>
+<%= label_tag :available_on_tue, "Tuesday" %>
+<%= check_box :volunteer, :available_on_tue %>
+<%= label_tag :available_on_wed, "Wednesday" %>
+<%= check_box :volunteer, :available_on_wed %>
+<%= label_tag :available_on_thu, "Thursday" %>
+<%= check_box :volunteer, :available_on_thu %>
+<%= label_tag :available_on_fri, "Friday" %>
+<%= check_box :volunteer, :available_on_fri %>
+<%= label_tag :available_on_sat, "Saturday" %>
+<%= check_box :volunteer, :available_on_sat %>
+<%= label_tag :available_on_sun, "Sunday" %>
+<%= check_box :volunteer, :available_on_sun %>
+
+<%= label_tag :languages_known %>
+<%= select(:volunteer, :languages_known, options_for_select([["English", "English"], ["Tamil", "Tamil"], ["Hindi", "Hindi"]],
+      selected: @volunteer.languages_known), {}, { multiple: true }) %>

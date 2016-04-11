@@ -1,0 +1,22 @@
+<% provide(:title, 'Service Request List') %>
+<h1>List of Service Requests</h1>
+
+<div class="row">
+  <div class="span6 offset3">
+   <%= will_paginate %>
+    <table class="table table-striped">
+      <thead>
+        <td>Location</td>
+        <td>Date</td>
+        <td>From</td>
+        <td>To</td>
+        <td>Language</td>
+        <td>Action(s)</td>
+      </thead>
+      <tbody>
+        <%= render @service_requests %>
+      </tbody>
+    </table>
+  <%= will_paginate %>
+  </div>
+</div>

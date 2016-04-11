@@ -1,4 +1,18 @@
 FindScribeApp::Application.routes.draw do
+
+  resources :users, only: [:new, :create]
+  resources :sessions, only: [:new, :create, :destroy]
+  resources :service_requests, only: [:new, :create, :index, :edit, :update]
+  resources :service_responses, only: [:create, :destroy]
+
+  root to: "users#new"
+  match "/signup", to: "users#new"
+  match "/signin", to: "sessions#new"
+  match "/signout", to: "sessions#destroy", via: :delete
+  match "/build_service_response", to: "service_responses#build"
+  match "/drop_response", to: "service_responses#destroy", via: :delete
+  match "/service_responses", to: "service_responses#index_by_service_request"
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

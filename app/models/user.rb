@@ -1,12 +1,14 @@
 class User < ActiveRecord::Base
   attr_accessible :address, :city, :contact_no, :dob, 
   				:email, :first_name, :gender, :last_name, :password,
-  				:password_confirmation, :volunteer?
+  				:password_confirmation, :is_volunteer
 
   has_secure_password
 
-  has_one :volunteer
-  has_many :service_requests, dependent: destroy
+  has_one :volunteer, dependent: :destroy
+  has_many :service_requests, dependent: :destroy
+
+  accepts_nested_attributes_for :volunteer
   
   before_save { |user| user.email = email.downcase }
   before_save :create_remember_token
@@ -19,12 +21,14 @@ class User < ActiveRecord::Base
   validates :last_name, presence: true
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }
   validates :contact_no, presence: true
+  validates :gender, inclusion: { in: %w(M F), message: "%{value} is not valid" }
+  validates :city, presence: true, inclusion: { in: %w(Chennai Mumbai Delhi), message: "%{value} is not valid" }
   validates :password, presence: true, length: { minimum: 6 }
   validates :password_confirmation, presence: true
 
 
   def init
-    self.volunteer? = false if self.is_volunteer.nil?
+    self.is_volunteer = false if self.is_volunteer.nil?
   end
 
   private

@@ -1,0 +1,53 @@
+<% provide(:title, 'Sign up') %>
+<h1>Sign up</h1>
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for(@user) do |f| %>
+
+      <%= render 'shared/error_messages', object: f.object %>
+      
+
+      <%= f.label :fname %>
+      <%= f.text_field :first_name %>
+
+      <%= f.label :lname %>
+      <%= f.text_field :last_name %>
+
+      <%= f.label :dob %>
+      <%= f.text_field :dob %>
+
+      <div style="display:inline">
+	      <%= f.label :gender %>
+	      <%= f.label :gender, "Male", value: "M" %>
+	      <%= f.radio_button :gender, "M" %>
+	      <%= f.label :gender, "Female", value: "F" %>
+	      <%= f.radio_button :gender, "F" %>
+	    </div>
+
+      <%= f.label :email %>
+      <%= f.text_field :email %>
+
+      <%= f.label :address %>
+      <%= f.text_area :address, size: "5*10" %>
+
+      <%= f.label :city %>
+      <%= f.select :city, options_for_select([["--Select--", ""], ["Chennai", "Chennai"], ["Delhi", "Delhi"], ["Mumbai", "Mumbai"]], selected: @user.city) %>
+
+      <%= f.label :contact_no %>
+      <%= f.telephone_field :contact_no %>
+
+      <%= render "volunteer_form", v: @volunteer if @user.is_volunteer %>
+
+      <%= f.label :password %>
+      <%= f.password_field :password %>
+
+      <%= f.label :password_confirmation, "Confirmation" %>
+      <%= f.password_field :password_confirmation %>
+      
+      <%= f.label :volunteer %>
+      <%= f.check_box :is_volunteer %>
+
+      <%= f.submit "Submit", class: "btn btn-large btn-primary" %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,2 @@
+module ServiceResponsesHelper
+end
