@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160406134833) do
+ActiveRecord::Schema.define(:version => 20160411094002) do
 
   create_table "service_requests", :force => true do |t|
     t.string   "city"
@@ -19,9 +19,10 @@ ActiveRecord::Schema.define(:version => 20160406134833) do
     t.time     "start_time"
     t.time     "end_time"
     t.string   "language"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.integer  "user_id"
+    t.integer  "num_responses"
   end
 
   create_table "service_responses", :force => true do |t|

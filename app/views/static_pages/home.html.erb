@@ -1,0 +1,29 @@
+<% if signed_in? %>
+	<div class="row">
+    <% if(current_user.is_volunteer) %>
+      <ul>
+        <li><%= link_to "Edit Profile", edit_user_path(current_user) %></li>
+        <li><%= link_to "View all requests", service_requests_path %></li>
+        <li><%= link_to "View my responses", service_requests_path(filter: "Responded") %></li>
+      </ul>
+    <% else %>
+      <ul>
+        <li><%= link_to "Edit Profile", edit_user_path(current_user) %></li>
+        <li><%= link_to "Submit a new request", new_service_request_path %></li>
+        <li><%= link_to "View all requests", service_requests_path %></li>
+      </ul>
+    <% end %>
+  </div>
+<% else %>
+	<div class="center hero-unit">
+	  <h1>Welcome to the Find Scribe App</h1>
+
+	  <h2>
+	    Register now!
+	  </h2>
+
+	  <%= link_to "I am a Volunteer", signup_path(is_volunteer: "true"), class: "btn btn-large btn-primary" %>
+    <%= link_to "I am a Student", signup_path, class: "btn btn-large btn-primary" %>
+	</div>
+
+<% end %>

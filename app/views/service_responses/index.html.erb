@@ -1,0 +1,18 @@
+<% provide(:title, 'Service Response List') %>
+<h1>List of Responses</h1>
+
+<div class="row">
+  <div class="span6 offset3">
+    <%= will_paginate %>
+    <table class="table table-striped">
+      <thead>
+        <td>Volunteer</td>
+        <td>Contact</td>
+      </thead>
+      <tbody>
+        <%= render @service_responses %>
+      </tbody>
+    </table>
+    <%= will_paginate %>
+  </div>
+</div>
