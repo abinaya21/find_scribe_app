@@ -65,6 +65,7 @@ GEM
     mime-types (1.25.1)
     multi_json (1.11.2)
     mysql2 (0.3.20)
+    pg (0.18.4)
     polyglot (0.3.5)
     power_assert (0.2.7)
     rack (1.4.7)
@@ -82,6 +83,11 @@ GEM
       activesupport (= 3.2.22.2)
       bundler (~> 1.0)
       railties (= 3.2.22.2)
+    rails_12factor (0.0.3)
+      rails_serve_static_assets
+      rails_stdout_logging
+    rails_serve_static_assets (0.0.5)
+    rails_stdout_logging (0.0.5)
     railties (3.2.22.2)
       actionpack (= 3.2.22.2)
       activesupport (= 3.2.22.2)
@@ -140,7 +146,9 @@ DEPENDENCIES
   flag_shih_tzu
   jquery-rails
   mysql2 (= 0.3.20)
+  pg
   rails (= 3.2.22.2)
+  rails_12factor
   rspec-rails (= 2.11.0)
   sass-rails (~> 3.2.3)
   test-unit
