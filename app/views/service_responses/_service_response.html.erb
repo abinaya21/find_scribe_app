@@ -1,4 +1,4 @@
 <tr>
-	<td><%= service_response.volunteer.user.first_name %><%= service_response.volunteer.user.last_name %></td>
-  <td><%= service_response.volunteer.user.contact_no %></td>
+	<td><%= service_response.volunteer.user.first_name %>&nbsp;<%= service_response.volunteer.user.last_name %></td>
+  <td><%= link_to service_response.volunteer.user.contact_no, "tel://"<<service_response.volunteer.user.contact_no %></td>
 </tr>

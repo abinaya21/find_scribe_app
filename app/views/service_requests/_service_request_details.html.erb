@@ -4,23 +4,37 @@
 
       <%= render 'shared/error_messages', object: f.object %>
 
-      <%= f.label :date, "Date of Examination" %>
-      <%= f.text_field :date %>
+      <%= f.label :date, "Date of Examination <span class='red'>*</span>".html_safe %>
+      <%= f.text_field :date, class: "datepicker", required: true %>
 
-      <%= f.label :start_time %>
-      <%= f.text_field :start_time %>
+      <%= f.label :start_time, "Start Time <span class='red'>*</span>".html_safe %>
+      <%= f.text_field :start_time, required: true %>
 
-      <%= f.label :end_time %>
-      <%= f.text_field :end_time %>
+      <%= f.label :end_time, "End Time <span class='red'>*</span>".html_safe %>
+        <%= f.text_field :end_time, required: true %>
 
-      <%= f.label :language %>
-      <%= f.select :language, options_for_select([["--Select--", ""], ["English", "English"], ["Tamil", "Tamil"], ["Hindi", "Hindi"]], selected: @service_request.language) %>
+      <%= f.label :language, "Language <span class='red'>*</span>".html_safe %>
+      <%= f.select :language, options_for_select([["--Select--", ""], ["English", "English"], ["Tamil", "Tamil"], ["Hindi", "Hindi"]], selected: @service_request.language), required: true %>
 
-      <%= f.label :city, "Location" %>
-      <%= f.select :city, options_for_select([["--Select--", ""], ["Chennai", "Chennai"], ["Mumbai", "Mumbai"], ["Delhi", "Delhi"]], selected: @service_request.city) %>
+      <%= f.label :city, "Location <span class='red'>*</span>".html_safe %>
+      <%= f.select :city, options_for_select([["--Select--", ""], ["Chennai", "Chennai"], ["Mumbai", "Mumbai"], ["Delhi", "Delhi"]], selected: @service_request.city), required: true %>
 
-      <%= f.submit "Submit", class: "btn btn-large btn-primary" %>
+      <%= f.submit "Submit", class: "btn btn-primary" %>
+      <%= link_to "Cancel", service_requests_path, class: "btn btn-secondary" %>
     <% end %>
 
   </div>
 </div>
+
+  <script>
+    $(document).ready(function(){
+      $('.datepicker').datepicker({
+        format: "dd/mm/yyyy"
+      });
+
+      $('#timepicker1').timepicker({
+        template: "dropdown",
+        minuteStep: 15
+      });
+    });
+  </script>

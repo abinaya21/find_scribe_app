@@ -2,7 +2,7 @@ FindScribeApp::Application.routes.draw do
 
   resources :users, only: [:new, :create, :edit, :update]
   resources :sessions, only: [:new, :create, :destroy]
-  resources :service_requests, only: [:new, :create, :index, :edit, :update]
+  resources :service_requests, only: [:new, :create, :index, :edit, :update, :destroy]
   resources :service_responses, only: [:create, :destroy, :index]
 
   root to: "static_pages#home"

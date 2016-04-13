@@ -18,19 +18,18 @@ class ServiceRequestsController < ApplicationController
   end
 
   def index
-    @filter_options   = [["All Requests", "All"], ["Only requests with responses", "Responded"]]
-    @request_filter   = (params[:filter] == "Responded") ? "Responded" : "All"
+    @filter_options   = [["All Requests", "All"], ["Confirmed Requests", "Responded"], ["Open Requests", "Open"]]
+    @request_filter   = (params[:filter].nil?) ? "All" : params[:filter]
 
     retrieve_service_requests
   end
 
   def retrieve_service_requests
-    has_response_flag = (@request_filter == "All") ? false : true
 
     if current_user.is_volunteer
-      @service_requests = get_associated_requests(current_user, has_response_flag)
+      @service_requests = get_associated_requests(current_user, @request_filter)
     else
-      @service_requests = get_submitted_requests(current_user, has_response_flag)
+      @service_requests = get_submitted_requests(current_user, @request_filter)
     end
 
     @service_requests = @service_requests.paginate(page: params[:page])
@@ -38,6 +37,8 @@ class ServiceRequestsController < ApplicationController
 
   def edit
   	@service_request = ServiceRequest.find(params[:id])
+    @service_request.start_time = @service_request.start_time.to_s(:timings) unless @service_request.start_time.nil?
+    @service_request.end_time = @service_request.end_time.to_s(:timings) unless @service_request.end_time.nil?
   end
 
   def update
@@ -48,6 +49,12 @@ class ServiceRequestsController < ApplicationController
     else
 		  render "edit"
     end
+  end
+
+  def destroy
+    @service_request = ServiceRequest.find(params[:id])
+    @service_request.destroy
+    redirect_to service_requests_path
   end
 
   private
@@ -66,20 +73,30 @@ class ServiceRequestsController < ApplicationController
 
     # param "has_response" when set to true indicates that 
     # only requests with response must be retrieved
-    def get_submitted_requests(user, has_response = false)
-      if has_response
+    def get_submitted_requests(user, filter_option = "All")
+      if filter_option == "Responded"
         user.service_requests.where("num_responses > 0")
+      elsif filter_option == "Open"
+        user.service_requests.where("num_responses = 0")
       else
         user.service_requests
       end
     end
 
-    def get_associated_requests(user, has_response = false)
-      if has_response
-        user.volunteer.service_requests
+    def get_associated_requests(user, filter_option = "All")
+      service_requests = []
+      if filter_option == "Responded"
+        service_requests = user.volunteer.service_requests.where("date >= CURDATE()")
+      elsif filter_option == "Open"
+        get_matching_requests(user).each do |request|
+          if(!request.responded_by(current_user.volunteer))
+            service_requests << request
+          end
+        end
       else
-        get_matching_requests(user)
+        service_requests = get_matching_requests(user)
       end
+      return service_requests
     end
 
     def get_matching_requests(user)

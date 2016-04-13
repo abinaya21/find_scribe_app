@@ -1,4 +1,5 @@
 @import "bootstrap";
+@import "bootstrap-timepicker";
 
 /* mixins, variables, etc. */
 
@@ -27,6 +28,10 @@ textarea {
   h1 {
     margin-bottom: 10px;
   }
+}
+
+span.red {
+  color: red;
 }
 
 /* typography */

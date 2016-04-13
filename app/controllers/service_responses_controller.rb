@@ -20,8 +20,8 @@ class ServiceResponsesController < ApplicationController
   end
 
   def index
-    service_request = ServiceRequest.find(params[:service_request_id])
-    if(service_request.num_responses > 0)
+    @service_request = ServiceRequest.find(params[:service_request_id])
+    if(@service_request.num_responses > 0)
       @service_responses = ServiceResponse.responses_to_request(params[:service_request_id]).paginate(page: params[:page])
     end
   end

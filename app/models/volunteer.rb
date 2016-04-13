@@ -1,8 +1,10 @@
 class Volunteer < ActiveRecord::Base
 
-  attr_accessible :availability, :languages_known, :city, :available_on_sun,
+  attr_accessible :availability, :languages_known, :available_on_sun,
                   :available_on_mon, :available_on_tue, :available_on_wed, 
                   :available_on_thu, :available_on_fri, :available_on_sat
+
+  serialize :languages_known
 
   include FlagShihTzu
 

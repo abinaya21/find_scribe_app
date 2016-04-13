@@ -3,11 +3,23 @@
     <div class="container">
       <nav>
         <ul class="nav pull-right">
-          <li><%= link_to "Home",    root_path %></li>
           <% if signed_in? %>
-            <li><%= link_to "Sign out", signout_path, method: "delete" %></li>
-            <li><%= current_user.id %>
+            <% if current_user.is_volunteer %>
+              <li><%= link_to "View Requests",    service_requests_path %></li>
+            <% else %>
+              <li><%= link_to "My Requests",    service_requests_path %></li>
+            <% end %>
+            <li id="fat-menu" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <%= current_user.first_name %>&nbsp;<%= current_user.last_name %> <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><%= link_to "Edit Profile", edit_user_path(current_user) %></li>
+                <li><%= link_to "Sign out", signout_path, method: "delete" %></li>
+              </ul>
+            </li>
           <% else %>
+            <li><%= link_to "Home",    root_path %></li>
             <li><%= link_to "Sign in", signin_path %></li>
           <% end %>
         </ul>

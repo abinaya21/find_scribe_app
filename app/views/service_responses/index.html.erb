@@ -1,18 +1,23 @@
 <% provide(:title, 'Service Response List') %>
-<h1>List of Responses</h1>
+<h1>Responses to Request : #<%= params[:service_request_id] %></h1>
 
 <div class="row">
   <div class="span6 offset3">
+  	<div>Date of examination : <%= @service_request.date %></div>
+  	<div>Start Time : <%= @service_request.start_time.to_s(:timings) unless @service_request.start_time.nil? %></div>
+  	<div>End Time : <%= @service_request.end_time.to_s(:timings) unless @service_request.end_time.nil? %></div>
+  	<div>Language : <%= @service_request.language %></div>
+  	<div>City : <%= @service_request.city %></div>
+  	<div>Location : </div><br/>
+      
     <%= will_paginate %>
     <table class="table table-striped">
-      <thead>
-        <td>Volunteer</td>
-        <td>Contact</td>
-      </thead>
-      <tbody>
-        <%= render @service_responses %>
-      </tbody>
+      <th>Volunteer</th>
+      <th>Contact</th>
+      <%= render @service_responses %>
     </table>
     <%= will_paginate %>
+
+    <%= link_to "<- Back to Requests", service_requests_path %>
   </div>
 </div>

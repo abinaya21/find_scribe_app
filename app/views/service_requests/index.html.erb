@@ -1,15 +1,26 @@
 <% provide(:title, 'Service Request List') %>
 
-<h1>List of Service Requests</h1>
-
 <div class="row">
-  <div class="span6 offset3">
-    <%= form_tag do %>
-      <%= select_tag "filter", options_for_select(@filter_options, selected: @request_filter), onchange:  "request_filter_changed(this.value)" %>
-    <% end %>
+  <div>
+    <div class="span6">
+      <% if current_user.is_volunteer %>
+        <h1>Scribe Requests</h1>
+      <% else %>
+        <h1>My Requests</h1>
+      <% end %>
+    </div>
+    <div class="span4">
+      <%= form_tag do %>
+        <%= select_tag "filter", options_for_select(@filter_options, selected: @request_filter), onchange:  "request_filter_changed(this.value)" %>
+      <% end %>
+      <% if !current_user.is_volunteer %>
+        <%= link_to "Create New", new_service_request_path, class: "btn btn-success" %>
+      <% end %>
+    </div>
    <%= will_paginate %>
     <table class="table table-striped">
       <thead>
+        <td>Request ID</td>
         <td>Location</td>
         <td>Date</td>
         <td>From</td>

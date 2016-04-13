@@ -27,11 +27,15 @@ class UsersController < ApplicationController
 		  if(@user.valid? && @volunteer.valid?)
   			@user.save
   			@volunteer.save
-  			redirect_to :users
+        sign_in @user
+        flash[:success] = "Registration Successful!"
+  			redirect_to service_requests_path
   			return
   		end
 	  elsif(@user.save)
-		  redirect_to :users
+		  sign_in @user
+      flash[:success] = "Registration Successful!"
+      redirect_to service_requests_path
 		  return
 	  end
 
@@ -39,18 +43,23 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = User.update_attributes(params[:user])
+    @user.assign_attributes(params[:user])
     if(@user.is_volunteer)
-      @volunteer = @user.volunteer.update_attributes(params[:volunteer])
+      @volunteer = @user.volunteer
+      @volunteer.assign_attributes(params[:volunteer])
 
       if(@user.valid? && @volunteer.valid?)
         @user.save
         @volunteer.save
-        redirect_to :users
+        sign_in @user
+        flash[:success] = "Profile updated successfully!"
+        redirect_to edit_user_path(current_user)
         return
       end
     elsif(@user.save)
-      redirect_to :users
+      sign_in @user
+      flash[:success] = "Profile updated successfully!"
+      redirect_to edit_user_path(current_user)
       return
     end
 
