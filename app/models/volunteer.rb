@@ -33,4 +33,12 @@ class Volunteer < ActiveRecord::Base
     self.languages_known ||= []
   end
 
+  def valid_responses
+    self.service_responses.where(response_invalid: false)
+  end
+
+  def invalid_responses
+    self.service_responses.where(response_invalid: true)
+  end
+
 end

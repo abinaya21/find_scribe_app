@@ -3,7 +3,7 @@ FindScribeApp::Application.routes.draw do
   resources :users, only: [:new, :create, :edit, :update]
   resources :sessions, only: [:new, :create, :destroy]
   resources :service_requests, only: [:new, :create, :index, :edit, :update, :destroy]
-  resources :service_responses, only: [:create, :destroy, :index]
+  resources :service_responses, only: [:create, :destroy, :index, :update]
 
   root to: "static_pages#home"
   match "/signup", to: "users#new"
@@ -11,6 +11,7 @@ FindScribeApp::Application.routes.draw do
   match "/signout", to: "sessions#destroy", via: :delete
   match "/build_service_response", to: "service_responses#build"
   match "/drop_response", to: "service_responses#destroy", via: :delete
+  match "/update_response_validity", to: "service_responses#update"
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

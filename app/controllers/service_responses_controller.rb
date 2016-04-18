@@ -10,13 +10,20 @@ class ServiceResponsesController < ApplicationController
 
   def create
     @service_response.save
-    redirect_to service_requests_path
+    redirect_to :back
+  end
+
+  def update
+    @service_response = ServiceResponse.find(params[:id])
+    @service_response.response_invalid = params[:response_invalid] unless params[:response_invalid].nil?
+    @service_response.save
+    redirect_to :back
   end
 
   def destroy
     response_to_del = ServiceResponse.response_to_request_by(params[:service_request_id], current_user.volunteer)
     response_to_del.destroy_all
-    redirect_to service_requests_path
+    redirect_to :back
   end
 
   def index

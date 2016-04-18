@@ -45,7 +45,10 @@ class ServiceRequestsController < ApplicationController
     @service_request = ServiceRequest.find(params[:id])
     if(@service_request.update_attributes(params[:service_request]))
 		  redirect_to service_requests_path
-      @service_request.service_responses.destroy_all
+      @service_request.service_responses.each do |response|
+        response.response_invalid = true
+        response.save
+      end
     else
 		  render "edit"
     end
@@ -86,22 +89,52 @@ class ServiceRequestsController < ApplicationController
     def get_associated_requests(user, filter_option = "All")
       service_requests = []
       if filter_option == "Responded"
-        service_requests = user.volunteer.service_requests.where("date >= CURDATE()")
+        service_requests = get_responded_requests_by(user.volunteer)
       elsif filter_option == "Open"
         get_matching_requests(user).each do |request|
           if(!request.responded_by(current_user.volunteer))
             service_requests << request
           end
         end
+        get_requests_with_invalid_responses_by(user.volunteer).each do |request|
+          service_requests << request unless service_requests.include? request
+        end
+
       else
-        service_requests = get_matching_requests(user)
+        #service_requests = get_matching_requests(user) --> not working
+
+        get_matching_requests(user).each do |request|
+            service_requests << request
+        end
+
+        get_responded_requests_by(user.volunteer).each do |request|
+          service_requests << request unless service_requests.include? request
+        end
       end
+
       return service_requests
+    end
+
+    def get_responded_requests_by(volunteer)
+      volunteer.service_requests.where("date >= CURDATE()")
+    end
+
+    def get_requests_with_invalid_responses_by(volunteer)
+      id_array = []
+      volunteer.invalid_responses.each do |response|
+        id_array << response.service_request_id
+      end
+      if(id_array.any?)
+      id_array = "(" << id_array.map(&:inspect).join(', ') << ")"
+        ServiceRequest.where("date >= CURDATE() AND id IN #{id_array}")
+      else
+        return []
+      end
     end
 
     def get_matching_requests(user)
       volunteer = user.volunteer;
-      languages_array = ["English","Tamil"]#@volunteer.languages_known
+      languages_array = volunteer.languages_known
       languages_array = "(" << languages_array.map(&:inspect).join(', ') << ")"
       city = user.city
       wday_array = get_availability_array(volunteer)

@@ -8,8 +8,30 @@
     <!-- Volunteer view -->
   	<% if current_user.is_volunteer %>
       <% if service_request.responded_by(current_user.volunteer) %>
-        <td><%= button_to "Undo Confirm", drop_response_path(service_request_id: service_request), 
-            method: :delete, data: { confirm: "Are you sure you want to delete your response?" }, class: "btn btn-danger" %></td>
+        <% response = ServiceResponse.response_to_request_by(service_request, current_user.volunteer).first %>
+        <% if response.response_invalid %>
+          <td>
+            <div class="dropdown">
+              <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Choose an action
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li>
+                  <%= link_to "Confirm Availability", update_response_validity_path(id: response.id, response_invalid: false) %>
+                </li>
+                <li>
+                  <%= link_to "Ignore", drop_response_path(service_request_id: service_request), 
+              method: :delete %>
+                </li>
+              </ul>
+            </div>
+          </td>
+          <td>Request edited</td>
+        <% else %>
+          <td><%= button_to "Undo Confirm", drop_response_path(service_request_id: service_request), 
+              method: :delete, data: { confirm: "Are you sure you want to delete your response?" }, class: "btn btn-danger" %></td>
+        <% end %>
       <% else %>
         <td><%= button_to "Confirm Availability", build_service_response_path(service_request_id: service_request), class: "btn btn-success" %></td>
       <% end %>

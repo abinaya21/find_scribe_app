@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160411094002) do
+ActiveRecord::Schema.define(:version => 20160413130447) do
 
   create_table "service_requests", :force => true do |t|
     t.string   "city"
@@ -28,8 +28,9 @@ ActiveRecord::Schema.define(:version => 20160411094002) do
   create_table "service_responses", :force => true do |t|
     t.integer  "service_request_id"
     t.integer  "volunteer_id"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+    t.boolean  "response_invalid",   :default => false
   end
 
   create_table "users", :force => true do |t|
