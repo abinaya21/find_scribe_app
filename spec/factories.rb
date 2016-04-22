@@ -25,6 +25,13 @@ FactoryGirl.define do
     date Date.today + 5
     city "Chennai"
     language "English"
+    start_time "10:00 AM"
+    end_time "11:00 AM"
     user
+
+    factory :closed_request
+      date Date.today - 1
+    end
   end
+
 end

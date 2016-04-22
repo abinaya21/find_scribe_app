@@ -18,7 +18,7 @@ class ServiceRequestsController < ApplicationController
   end
 
   def index
-    @filter_options   = [["All Requests", "All"], ["Confirmed Requests", "Responded"], ["Open Requests", "Open"]]
+    @filter_options   = [["All Requests", "All"], ["Confirmed Requests", "Responded"], ["Open Requests", "Open"], ["Closed Requests", "Closed"]]
     @request_filter   = (params[:filter].nil?) ? "All" : params[:filter]
 
     retrieve_service_requests
@@ -78,9 +78,11 @@ class ServiceRequestsController < ApplicationController
     # only requests with response must be retrieved
     def get_submitted_requests(user, filter_option = "All")
       if filter_option == "Responded"
-        user.service_requests.where("num_responses > 0")
+        user.service_requests.where("num_responses > 0 AND date >= CURDATE()")
       elsif filter_option == "Open"
-        user.service_requests.where("num_responses = 0")
+        user.service_requests.where("num_responses = 0 AND date >= CURDATE()")
+      elsif filter_option == "Closed"
+        user.service_requests.where("date < CURDATE()")
       else
         user.service_requests
       end
@@ -99,7 +101,8 @@ class ServiceRequestsController < ApplicationController
         get_requests_with_invalid_responses_by(user.volunteer).each do |request|
           service_requests << request unless service_requests.include? request
         end
-
+      elsif filter_option == "Closed"
+        service_requests = get_past_responses_by(user.volunteer)
       else
         #service_requests = get_matching_requests(user) --> not working
 
@@ -113,6 +116,10 @@ class ServiceRequestsController < ApplicationController
       end
 
       return service_requests
+    end
+
+    def get_past_responses_by(volunteer)
+      volunteer.service_requests.where("date < CURDATE()")
     end
 
     def get_responded_requests_by(volunteer)
